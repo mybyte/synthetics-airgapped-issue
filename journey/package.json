@@ -1,0 +1,16 @@
+{
+  "name": "Stackoverflow",
+  "private": true,
+  "description": "Example",
+  "scripts": {},
+  "license": "??",
+  "dependencies": {},
+  "devDependencies": {
+    "@elastic/synthetics": "^1.0.0-beta.18",
+    "node-static": "^0.7.11"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": ""
+}

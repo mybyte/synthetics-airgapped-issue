@@ -1,0 +1,50 @@
+version: '3.2'
+
+services:
+  el1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    container_name: el1
+    environment:
+      node.name: el1
+      cluster.name: docker-elk
+      discovery.type: single-node
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms2G -Xmx2G"      
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9201:9200
+    networks:
+      - el_test
+      
+    healthcheck:
+      test: curl -k -s https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5        
+    
+  kib1:
+    image: docker.elastic.co/kibana/kibana:7.16.3
+    container_name: kib1
+    depends_on:
+      el1:
+        condition: service_healthy
+    ports:
+      - 5602:5601    
+    environment:
+      SERVERNAME: localhost
+      ELASTICSEARCH_HOSTS: "http://el1:9200"
+    networks:
+      - el_test
+    
+    healthcheck:
+      test: curl -k -s https://localhost:5601 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks: 
+  el_test:
+    driver: bridge   

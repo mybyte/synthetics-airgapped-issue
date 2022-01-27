@@ -1,0 +1,18 @@
+heartbeat.monitors:
+- type: browser
+  enabled: true
+  id: test
+  name: test
+  schedule: "@every 1m"
+  source.local.path: /journey/
+
+# ---------------------------- Elasticsearch Output ----------------------------
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["http://el1:9200"]
+
+# ================================== Logging ===================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: error, warning, info, debug
+logging.level: debug
